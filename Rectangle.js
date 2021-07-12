@@ -17,6 +17,7 @@ class Rectangle{
         this.width = width
         this.height = height
         this.colour = colour
+        /** @type {[xRatio:number,yRatio:number]} */
         this.ratio = ratio
         this.id = Date.now();
     }
