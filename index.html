@@ -3,11 +3,49 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="index.js" defer></script>
+        <script src="Rectangle.js"></script>
+        <script src="rcolor.min.js"></script>
     </head>
     <body>
         <h1>Wall Calculator</h1>
         <canvas id="main-canvas" 
             width="960" height="540" 
             style="border: 2px; border-style: solid;"></canvas>
+        <div id = "settings">    
+            <form id ="canvas-form">
+                <label>Set canvas size:</label>
+                <!-- default canvas width is 960 x 540 -->
+                <input type="number" id="canvas-width" value="960"
+                    onchange="updateCanvasSize()">
+                x
+                <input type="number" id="canvas-height" value="540"
+                    onchange="updateCanvasSize()">
+                <br>
+                <label>Common Sizes:</label>
+                <select id="common-sizes" onchange="selectCanvasRatio()">
+                    <option selected>-- Select a common resolution --</option>
+                    <option value="640x480">640x480 (4:3)</option>
+                    <option value="768x480">768x480 (16:10)</option>
+                    <option value="1920x1080">1920x1080 (16:9)</option>
+                    <option value="1280x720">1280x720 (16:9)</option>
+                    <option value="960x720">960×720 (4:3)</option>
+                </select>
+            </form>
+            <div id ="rectangle-form">
+                <label>Ratio:</label>
+                <input id = "rectangle-ratio-width" 
+                    type="number" 
+                    class="ratio"
+                >
+                :
+                <input id = "rectangle-ratio-height" 
+                    type="number" 
+                    class="ratio"
+                >
+                <button id = "submit-ratio" onclick="newRectangle()">
+                    create rectangle
+                </button>
+            </form>
+        </div>
     </body>
 </html>
