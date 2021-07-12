@@ -51,6 +51,7 @@ canvas.addEventListener("mousemove",mouseMove)
 canvas.addEventListener("mouseup",mouseUp)
 
 
+
 //functions for mouse events
 /** @param {MouseEvent} e */
 function mouseDown(e){
@@ -101,6 +102,51 @@ function mouseMove(e){
 function mouseUp(e){
     moving = false;
 }
+
+//key event handler
+document.addEventListener("keydown", e=>{
+    if(selectedRectangle){
+        console.log("Key down" + e.key)
+        if(e.key == "ArrowUp"){
+           shapeBigger(selectedRectangle); 
+        }
+        else if(e.key == "ArrowDown"){
+            shapeSmaller(selectedRectangle);
+        }
+    }
+    
+})
+
+
+/**
+ * makes the shape the next biggest integer size for its ratio
+ * @param {Rectangle} shape 
+ */
+function shapeBigger(shape){
+    const newRatio = 
+        findUpperIntegerRatio(shape.width,shape.ratio[0]/shape.ratio[1]);
+    if(newRatio[0] < canvas.width && newRatio[1] < canvas.height){
+        shape.width = newRatio[0];
+        shape.height = newRatio[1];
+    }
+    draw();
+}
+
+/**
+ * makes the shape the next biggest integer size for its ratio
+ * @param {Rectangle} shape 
+ */
+ function shapeSmaller(shape){
+    const MIN_WIDTH = 100
+    const newRatio = 
+        findLowerIntegerRatio(shape.width,shape.ratio[0]/shape.ratio[1]);
+    if(newRatio && (newRatio[0] > MIN_WIDTH) ){
+        shape.width = newRatio[0];
+        shape.height = newRatio[1];
+    }
+    draw();
+}
+
 
 //handle dist between points
 function distPoints(x1,y1,x2,y2){
@@ -153,7 +199,7 @@ function selectCanvasRatio(){
  * @param {number} ratio
  * @returns {[width:number,height:number]|null} returns compatible dimensions if exists, otherwise null
  */
-function findLowerIntegerHeight(width,ratio){
+function findLowerIntegerRatio(width,ratio){
     //breaks out when a width with a corresponding integer height is found
     while(width --> 0){
         if(((width/ratio) % 1)===0) return [width,width/ratio];
@@ -161,8 +207,15 @@ function findLowerIntegerHeight(width,ratio){
     return null;
 }
 
-//must halt if ratio is rational
-function findUpperIntegerHeight(width,ratio){
+/**
+ * finds the closest lower height and width which maintains the ratio 
+ * while both values remain an integer
+ * @param {number} width 
+ * @param {number} ratio
+ * @returns {[width:number,height:number]|null} returns compatible dimensions if exists, otherwise null
+ */
+function findUpperIntegerRatio(width,ratio){
+    //must halt if ratio is rational
     while(width++){
         if(((width/ratio) % 1)===0) return [width,width/ratio];
     }
