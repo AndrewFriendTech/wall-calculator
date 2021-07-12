@@ -11,6 +11,10 @@ var rectangles = [];
 /** @type {Rectangle} */
 var selectedRectangle = null;
 
+//when moving a shape , this will be true, 
+//will revert to false on mouseup
+var moving = false;
+
 //resizing corner constants
 const RESIZE_CIRCLE_RADIUS = 5;
 const RESIZE_CIRCLE_CLICK_BOUNDS = 10; 
@@ -33,12 +37,6 @@ function draw(){
                 rectangles[i].width,
                 rectangles[i].height);
             //draw a circle in the bottom right rectangle for resizing;
-            let corner = resizingCorner();
-            ctx.moveTo(corner[0],corner[1])
-            ctx.arc(corner[0],corner[1],
-                RESIZE_CIRCLE_RADIUS,0,Math.PI*2);
-            ctx.fillStyle = "black";
-            ctx.fill()
             //to-do: make ratio labeled on each rectangle
             //and add delete function
         }
@@ -50,6 +48,7 @@ function draw(){
 //event listeners for mouse events
 canvas.addEventListener("mousedown",mouseDown);
 canvas.addEventListener("mousemove",mouseMove)
+canvas.addEventListener("mouseup",mouseUp)
 
 
 //functions for mouse events
@@ -69,35 +68,38 @@ function mouseDown(e){
         selectedRectangle = null;
         draw()
     }
+
+    if(selectedRectangle){
+        moving=true;
+    }
     
 }
 
 /** @param {MouseEvent} e */
 function mouseMove(e){
-    if(selectedRectangle){
-        let corner = resizingCorner();
-        console.log(corner);
-        if(distPoints(e.offsetX,e.offsetY,corner[0],corner[1]) 
-            < RESIZE_CIRCLE_CLICK_BOUNDS)
+    if(selectedRectangle && moving){
+        const centerX = selectedRectangle.x + (selectedRectangle.width/2);
+        const centerY = selectedRectangle.y + (selectedRectangle.height/2);
+        const dx = e.offsetX - centerX;
+        const dy = e.offsetY - centerY;
+        const newX = selectedRectangle.x + dx;
+        const newY = selectedRectangle.y + dy;
+        if(newX > 0 
+            && newX < canvas.width - selectedRectangle.width
+            && newY > 0 
+            && newY< canvas.height - selectedRectangle.height)
         {
-            console.log("here")
-            let ratioArr = selectedRectangle.ratio;
-            let ratio = ratioArr[0]/ratioArr[1];
-            let newWidth = e.offsetX - selectedRectangle.x
-            console.log(newWidth)
-            let newDimensions = findIntegerHeight(newWidth,ratio);
-            if (newDimensions[0] > 20 && newDimensions[1] != null ){
-                selectedRectangle.width = newDimensions[0];
-                selectedRectangle.height = newDimensions[1];
-                draw()
-            }; 
-        }    
+            selectedRectangle.x = newX;
+            selectedRectangle.y = newY;
+            draw();
+        }
+
     }
 }
 
 /** @param {MouseEvent} e */
 function mouseUp(e){
-
+    moving = false;
 }
 
 //handle dist between points
