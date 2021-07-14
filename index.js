@@ -41,7 +41,7 @@ function draw(){
             //and add delete function
         }
     }
-        
+    generateDetails()
     
 }
 
