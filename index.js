@@ -162,13 +162,12 @@ function newRectangle(){
         Number(document.getElementById("rectangle-ratio-height").value)
     if(widthRatio&&heightRatio){
         let ratio = widthRatio/heightRatio;
-        let height = 100;
-        let width = height * ratio;
+        let dimensions = findLowerIntegerRatio(200,ratio);
         let colour = rcolor();
         //create a rectangle with these dimensions in the middle of the page.
         rectangles.push(
             new Rectangle(canvas.width/2,canvas.height/2,
-                width,height,colour,[widthRatio,heightRatio]));
+                dimensions[0],dimensions[1],colour,[widthRatio,heightRatio]));
         draw();
     }
 
