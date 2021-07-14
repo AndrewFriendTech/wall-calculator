@@ -112,6 +112,9 @@ document.addEventListener("keydown", e=>{
         }
         else if(e.key == "ArrowDown"){
             shapeSmaller(selectedRectangle);
+        } else if(e.key == "Delete"){
+            rectangles.splice(rectangles.indexOf(selectedRectangle));
+            draw()
         }
     }
     
