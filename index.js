@@ -220,3 +220,42 @@ function findUpperIntegerRatio(width,ratio){
         if(((width/ratio) % 1)===0) return [width,width/ratio];
     }
 }
+
+//generate details about rectangles
+function generateDetails(){
+    let element = document.getElementById("rectangle-container");
+    element.innerHTML = rectangles.map((rectangle,index) => `
+        <div id="rectangle${index}" class="rectangle" 
+            style="background-color:${rectangle.colour}">
+            <div class = "rectangle-x  rectangle-detail">
+                <label>X:</label>
+                <div class = "rectangle-value">
+                ${rectangle.x}
+                </div>
+            </div>
+            <div class = "rectangle-y  rectangle-detail">
+                <label>Y:</label>
+                <div class = "rectangle-value">
+                ${rectangle.y}
+                </div>
+            </div>
+            <div class = "rectangle-height  rectangle-detail">
+                <label>Height:</label>
+                <div class = "rectangle-value">
+                ${rectangle.height}
+                </div>
+            </div>
+            <div class = "rectangle-width  rectangle-detail">
+                <label>Width:</label>
+                <div class = "rectangle-value">
+                ${rectangle.width}
+                </div>
+            </div>
+            <div class = "rectangle-ratio  rectangle-detail">
+                <label>Ratio:</label>
+                <div class = "rectangle-value">
+                ${rectangle.ratio[0]}:${rectangle.ratio[1]}
+                </div>
+            </div>
+        </div>`).join();
+}
